@@ -6,10 +6,10 @@ import (
 )
 
 type Post interface {
-	GetById(id string) (models.Post, error)
-	GetList(page int, limit int) (models.OutputPostList, error)
-	Create(post models.InputPost) (models.OutputPost, error)
-	Update(post models.InputUpdatePost) error
+	GetById(id string) (*models.Post, error)
+	GetList(page int, limit int) (*models.OutputPostList, error)
+	Create(post *models.InputPost) (*models.OutputPost, error)
+	Update(post *models.InputUpdatePost) error
 	Delete(id string) error
 }
 
