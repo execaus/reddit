@@ -89,6 +89,12 @@ func (r *PostPostgres) Update(post *models.InputUpdatePost) error {
 
 	return nil
 }
-func (r *PostPostgres) Delete(id string) error {
 
+func (r *PostPostgres) Delete(id string) error {
+	_, err := r.db.Query(`update "Post" set deleted=true where id=$1`, id)
+	if err != nil {
+		return err
+	}
+
+	return nil
 }
