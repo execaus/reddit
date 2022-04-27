@@ -13,12 +13,19 @@ type Post interface {
 	Delete(id string) error
 }
 
+type Auth interface {
+	SignIn(input *models.InputSignIn) (*models.OutputSignIn, error)
+	SignUp(input *models.InputSignUp) (*models.OutputSignUp, error)
+}
+
 type Service struct {
 	Post Post
+	Auth Auth
 }
 
 func NewService(repos *repository.Repository) *Service {
 	return &Service{
 		Post: NewPostService(repos.Post),
+		Auth: NewAuthService(repos.Auth),
 	}
 }

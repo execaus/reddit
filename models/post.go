@@ -12,8 +12,8 @@ type Post struct {
 }
 
 type OutputPostList struct {
-	Posts      []Post
-	TotalCount int
+	Posts      []Post `json:"posts"`
+	TotalCount int    `json:"total_count"`
 }
 
 type InputPost struct {
@@ -31,4 +31,9 @@ type InputUpdatePost struct {
 	Id      string
 	Caption string
 	Body    string
+}
+
+type UriGetPostList struct {
+	Page  string `uri:"page"`
+	Limit string `uri:"limit"`
 }

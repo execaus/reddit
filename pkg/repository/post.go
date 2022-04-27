@@ -79,8 +79,9 @@ func (r *PostPostgres) Update(post *models.InputUpdatePost) error {
 	}
 
 	querySetPart := strings.Join(setValues, ", ")
+	args = append(args, post.Id)
 
-	query := fmt.Sprintf(`update "Post" set %s where id=%s`, querySetPart, post.Id)
+	query := fmt.Sprintf(`update "Post" set %s where id=$%d`, querySetPart, argId)
 
 	_, err := r.db.Query(query, args...)
 	if err != nil {
