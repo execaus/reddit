@@ -18,7 +18,7 @@ func NewSessionPostgres(db *sqlx.DB) *SessionPostgres {
 }
 
 func (r *SessionPostgres) Generate(login string) (string, error) {
-	timeNow := time.Now()
+	timeNow := time.Now().UTC()
 	sessionHash := getSessionHash(timeNow)
 	timeDead := timeNow.Add(expireSession)
 

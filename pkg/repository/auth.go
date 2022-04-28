@@ -13,6 +13,24 @@ type AuthPostgres struct {
 
 func (r *AuthPostgres) SignIn(input *models.InputSignIn) (*models.OutputSignIn, error) {
 	var output models.OutputSignIn
+	var account models.Account
+
+	if err := r.db.Get(&account, `select * from "Account" where login=$1 or email=$1`,
+		input.Identifier); err != nil {
+		return nil, err
+	}
+
+	if err := bcrypt.CompareHashAndPassword([]byte(account.Password), []byte(input.Password)); err != nil {
+		return nil, err
+	}
+
+	sessionHash, err := r.session.Generate(account.Login)
+	if err != nil {
+		return nil, err
+	}
+
+	output.Session = sessionHash
+	output.Account = account
 
 	return &output, nil
 }

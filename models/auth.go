@@ -3,6 +3,7 @@ package models
 import (
 	"errors"
 	"fmt"
+	"strings"
 )
 
 const MinPasswordLength = 8
@@ -20,6 +21,10 @@ func (i *InputSignUp) IsValid() error {
 		return errors.New(fmt.Sprintf("login min length %d symbols", MinPasswordLength))
 	}
 
+	if strings.Contains(i.Login, "@") {
+		return errors.New(`login have forbidden symbol "@"`)
+	}
+
 	if len(i.Password) < MinPasswordLength {
 		return errors.New(fmt.Sprintf("password min length %d symbols", MinPasswordLength))
 	}
@@ -32,12 +37,12 @@ type OutputSignUp struct {
 }
 
 type InputSignIn struct {
-	Login    string
-	Password string
+	Identifier string
+	Password   string
 }
 
 func (i *InputSignIn) Validate() error {
-	if i.Login == "" {
+	if i.Identifier == "" {
 		return errors.New("login required")
 	}
 
