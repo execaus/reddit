@@ -23,15 +23,13 @@ type Session interface {
 }
 
 type Repository struct {
-	Post    Post
-	Auth    Auth
-	Session Session
+	Post Post
+	Auth Auth
 }
 
 func NewRepository(db *sqlx.DB) *Repository {
 	return &Repository{
-		Post:    NewPostPostgres(db),
-		Auth:    NewAuthPostgres(db),
-		Session: NewSessionPostgres(db),
+		Post: NewPostPostgres(db),
+		Auth: NewAuthPostgres(db),
 	}
 }
