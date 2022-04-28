@@ -36,6 +36,18 @@ type InputSignIn struct {
 	Password string
 }
 
+func (i *InputSignIn) Validate() error {
+	if i.Login == "" {
+		return errors.New("login required")
+	}
+
+	if i.Password == "" {
+		return errors.New("password required")
+	}
+
+	return nil
+}
+
 type OutputSignIn struct {
 	Session string  `json:"session"`
 	Account Account `json:"account"`

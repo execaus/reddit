@@ -14,7 +14,8 @@ func NewAuthService(repo repository.Auth) *AuthService {
 }
 
 func (s *AuthService) SignIn(input *models.InputSignIn) (*models.OutputSignIn, error) {
-
+	// todo send email sign-in account
+	return s.repo.SignIn(input)
 }
 
 func (s *AuthService) SignUp(input *models.InputSignUp) (*models.OutputSignUp, error) {

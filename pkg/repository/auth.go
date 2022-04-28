@@ -12,7 +12,9 @@ type AuthPostgres struct {
 }
 
 func (r *AuthPostgres) SignIn(input *models.InputSignIn) (*models.OutputSignIn, error) {
-	bcrypt.CompareHashAndPassword()
+	var output models.OutputSignIn
+
+	return &output, nil
 }
 
 func (r *AuthPostgres) SignUp(input *models.InputSignUp) (*models.OutputSignUp, error) {
