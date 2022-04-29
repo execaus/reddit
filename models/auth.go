@@ -54,6 +54,6 @@ func (i *InputSignIn) Validate() error {
 }
 
 type OutputSignIn struct {
-	Session string  `json:"session"`
+	Token   string  `json:"token"`
 	Account Account `json:"account"`
 }

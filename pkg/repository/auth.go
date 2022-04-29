@@ -19,17 +19,12 @@ func (r *AuthPostgres) SignIn(input *models.InputSignIn) (*models.OutputSignIn, 
 		input.Identifier); err != nil {
 		return nil, err
 	}
+	account.Permissions = "admin, moderator, user"
 
 	if err := bcrypt.CompareHashAndPassword([]byte(account.Password), []byte(input.Password)); err != nil {
 		return nil, err
 	}
 
-	sessionHash, err := r.session.Generate(account.Login)
-	if err != nil {
-		return nil, err
-	}
-
-	output.Session = sessionHash
 	output.Account = account
 
 	return &output, nil
