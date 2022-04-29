@@ -1,6 +1,8 @@
 package service
 
 import (
+	"errors"
+	"fmt"
 	"github.com/golang-jwt/jwt"
 	"reddit/models"
 	"reddit/pkg/repository"
@@ -26,6 +28,18 @@ func (s *AuthService) SignIn(input *models.InputSignIn) (*models.OutputSignIn, e
 
 	token, err := generateJwtToken(output.Account.Permissions)
 	output.Token = token
+
+	inputToken, err := jwt.Parse(token, func(token *jwt.Token) (interface{}, error) {
+		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
+			return nil, errors.New("error parse method")
+		}
+
+		return []byte(jwtSecret), nil
+	})
+
+	if claims, ok := inputToken.Claims.(jwt.MapClaims); ok && inputToken.Valid {
+		fmt.Println(claims["Permissions"])
+	}
 
 	return output, nil
 }
