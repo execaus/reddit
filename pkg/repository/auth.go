@@ -23,38 +23,24 @@ func (r *AuthPostgres) SignIn(input *models.InputSignIn) (*models.OutputSignIn, 
 		return nil, err
 	}
 
-	sessionHash, err := r.session.Generate(account.Login)
-	if err != nil {
-		return nil, err
-	}
-
-	output.Session = sessionHash
 	output.Account = account
 
 	return &output, nil
 }
 
-func (r *AuthPostgres) SignUp(input *models.InputSignUp) (*models.OutputSignUp, error) {
-	var output models.OutputSignUp
-
+func (r *AuthPostgres) SignUp(input *models.InputSignUp) error {
 	passwordHash, err := getPasswordHash(input.Password)
 	if err != nil {
-		return nil, err
+		return err
 	}
 
 	_, err = r.db.Query(`insert into "Account" (login, password, name, email) 
 		values ($1, $2, $3, $4)`, input.Login, passwordHash, input.Name, input.Email)
 	if err != nil {
-		return nil, err
+		return err
 	}
 
-	sessionHash, err := r.session.Generate(input.Login)
-	if err != nil {
-		return nil, err
-	}
-
-	output.Session = sessionHash
-	return &output, nil
+	return nil
 }
 
 func getPasswordHash(password string) ([]byte, error) {

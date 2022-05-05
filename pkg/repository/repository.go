@@ -15,7 +15,7 @@ type Post interface {
 
 type Auth interface {
 	SignIn(input *models.InputSignIn) (*models.OutputSignIn, error)
-	SignUp(input *models.InputSignUp) (*models.OutputSignUp, error)
+	SignUp(input *models.InputSignUp) error
 }
 
 type Session interface {

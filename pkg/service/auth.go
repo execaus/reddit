@@ -18,13 +18,13 @@ func (s *AuthService) SignIn(input *models.InputSignIn) (*models.OutputSignIn, e
 	return s.repo.SignIn(input)
 }
 
-func (s *AuthService) SignUp(input *models.InputSignUp) (*models.OutputSignUp, error) {
+func (s *AuthService) SignUp(input *models.InputSignUp) error {
 	// todo send email registration
-	output, err := s.repo.SignUp(input)
+	err := s.repo.SignUp(input)
 	if err != nil {
-		return nil, err
+		return err
 	}
 
 	sendEmailRegistration(input)
-	return output, nil
+	return nil
 }

@@ -8,14 +8,23 @@ import (
 	"time"
 )
 
-const expireSession = time.Second * 10
+const expireSession = time.Minute
 
 type SessionPostgres struct {
 	db *sqlx.DB
 }
 
 func (r *SessionPostgres) GetAccount(hash string) (*models.Account, error) {
+	var account models.Account
 
+	if err := r.db.Get(&account, `select accountResult.* from (select * from "Session" where hash=$1
+    and dead_date > current_timestamp) as sessionResult
+    inner join (select * from "Account" where dead_date is null) as accountResult
+	on sessionResult.account=accountResult.login`, hash); err != nil {
+		return nil, err
+	}
+
+	return &account, nil
 }
 
 func NewSessionPostgres(db *sqlx.DB) *SessionPostgres {
