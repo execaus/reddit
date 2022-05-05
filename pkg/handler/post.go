@@ -2,6 +2,7 @@ package handler
 
 import (
 	"errors"
+	"fmt"
 	"github.com/gin-gonic/gin"
 	"net/http"
 	"reddit/models"
@@ -25,6 +26,12 @@ func (h *Handler) GetPostById(c *gin.Context) {
 }
 
 func (h *Handler) GetList(c *gin.Context) {
+	account := getAuthAccount(c)
+	if account == nil {
+		return
+	}
+	fmt.Println(account.Login)
+	fmt.Println(account.Role)
 	var uriParams models.UriGetPostList
 	if err := c.ShouldBindUri(&uriParams); err != nil {
 		sendBadRequestError(c, err)

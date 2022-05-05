@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"errors"
 	"github.com/gin-gonic/gin"
 	"log"
 	"net/http"
@@ -12,6 +13,10 @@ type HttpError struct {
 
 func sendBadRequestError(c *gin.Context, err error) {
 	sendError(c, http.StatusBadRequest, err)
+}
+
+func sendInternalServerErrorGetAuthUser(c *gin.Context) {
+	sendInternalServerError(c, errors.New("get auth account info"))
 }
 
 func sendInternalServerError(c *gin.Context, err error) {
