@@ -7,8 +7,7 @@ import (
 )
 
 type AuthPostgres struct {
-	db      *sqlx.DB
-	session *SessionPostgres
+	db *sqlx.DB
 }
 
 func (r *AuthPostgres) SignIn(input *models.InputSignIn) (*models.OutputSignIn, error) {
@@ -64,7 +63,6 @@ func getPasswordHash(password string) ([]byte, error) {
 
 func NewAuthPostgres(db *sqlx.DB) *AuthPostgres {
 	return &AuthPostgres{
-		db:      db,
-		session: NewSessionPostgres(db),
+		db: db,
 	}
 }

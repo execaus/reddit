@@ -20,5 +20,11 @@ func (s *AuthService) SignIn(input *models.InputSignIn) (*models.OutputSignIn, e
 
 func (s *AuthService) SignUp(input *models.InputSignUp) (*models.OutputSignUp, error) {
 	// todo send email registration
-	return s.repo.SignUp(input)
+	output, err := s.repo.SignUp(input)
+	if err != nil {
+		return nil, err
+	}
+
+	sendEmailRegistration(input)
+	return output, nil
 }

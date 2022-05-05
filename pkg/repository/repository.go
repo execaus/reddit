@@ -20,16 +20,19 @@ type Auth interface {
 
 type Session interface {
 	Generate(login string) (string, error)
+	GetAccount(hash string) (*models.Account, error)
 }
 
 type Repository struct {
-	Post Post
-	Auth Auth
+	Post    Post
+	Auth    Auth
+	Session Session
 }
 
 func NewRepository(db *sqlx.DB) *Repository {
 	return &Repository{
-		Post: NewPostPostgres(db),
-		Auth: NewAuthPostgres(db),
+		Post:    NewPostPostgres(db),
+		Auth:    NewAuthPostgres(db),
+		Session: NewSessionPostgres(db),
 	}
 }

@@ -4,6 +4,7 @@ import (
 	"crypto/sha256"
 	"encoding/hex"
 	"github.com/jmoiron/sqlx"
+	"reddit/models"
 	"time"
 )
 
@@ -11,6 +12,10 @@ const expireSession = time.Second * 10
 
 type SessionPostgres struct {
 	db *sqlx.DB
+}
+
+func (r *SessionPostgres) GetAccount(hash string) (*models.Account, error) {
+
 }
 
 func NewSessionPostgres(db *sqlx.DB) *SessionPostgres {

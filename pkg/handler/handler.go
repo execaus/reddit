@@ -22,7 +22,7 @@ func (h Handler) GetRouter() *gin.Engine {
 		auth.POST("/sign-up", h.SignUp)
 	}
 
-	api := router.Group("/api")
+	api := router.Group("/api", h.apiMiddleware)
 	{
 		posts := api.Group("/posts")
 		{

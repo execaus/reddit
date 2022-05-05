@@ -18,6 +18,10 @@ func sendInternalServerError(c *gin.Context, err error) {
 	sendError(c, http.StatusInternalServerError, err)
 }
 
+func sendUnauthorizedError(c *gin.Context, err error) {
+	sendError(c, http.StatusUnauthorized, err)
+}
+
 func sendBadRequestWithMessage(c *gin.Context, err error) {
 	sendErrorWithMessage(c, http.StatusBadRequest, err)
 }
