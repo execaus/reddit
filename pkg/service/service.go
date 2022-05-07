@@ -23,16 +23,22 @@ type Session interface {
 	Generate(login string) (string, error)
 }
 
+type RecoverAccess interface {
+	GenerateLink(link *models.InputRecoverAccessLink) error
+}
+
 type Service struct {
-	Post    Post
-	Auth    Auth
-	Session Session
+	Post          Post
+	Auth          Auth
+	Session       Session
+	RecoverAccess RecoverAccess
 }
 
 func NewService(repos *repository.Repository) *Service {
 	return &Service{
-		Post:    NewPostService(repos.Post),
-		Auth:    NewAuthService(repos.Auth),
-		Session: NewSessionService(repos.Session),
+		Post:          NewPostService(repos.Post),
+		Auth:          NewAuthService(repos.Auth),
+		Session:       NewSessionService(repos.Session),
+		RecoverAccess: NewRecoverAccessService(repos.RecoverAccess),
 	}
 }

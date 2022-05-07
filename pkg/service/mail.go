@@ -16,6 +16,11 @@ func sendEmailRegistration(data *models.InputSignUp) {
 	sendEmail(message, data.Email)
 }
 
+func sendEmailRecoverAccess(link string, receiver string) {
+	message := fmt.Sprintf("Ссылка на восстановление пароля: %s", link)
+	sendEmail(message, receiver)
+}
+
 func sendEmail(message string, receiver string) {
 	m := gomail.NewMessage()
 	m.SetHeader("From", sender)

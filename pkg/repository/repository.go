@@ -23,16 +23,22 @@ type Session interface {
 	GetAccount(hash string) (*models.Account, error)
 }
 
+type RecoverAccess interface {
+	GenerateLink(input *models.InputRecoverAccessLink) (string, string, error)
+}
+
 type Repository struct {
-	Post    Post
-	Auth    Auth
-	Session Session
+	Post          Post
+	Auth          Auth
+	Session       Session
+	RecoverAccess RecoverAccess
 }
 
 func NewRepository(db *sqlx.DB) *Repository {
 	return &Repository{
-		Post:    NewPostPostgres(db),
-		Auth:    NewAuthPostgres(db),
-		Session: NewSessionPostgres(db),
+		Post:          NewPostPostgres(db),
+		Auth:          NewAuthPostgres(db),
+		Session:       NewSessionPostgres(db),
+		RecoverAccess: NewRecoverAccessPostgres(db),
 	}
 }

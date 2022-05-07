@@ -22,6 +22,12 @@ func (h Handler) GetRouter() *gin.Engine {
 		auth.POST("/sign-up", h.SignUp)
 	}
 
+	recoverAccess := router.Group("/recover-access")
+	{
+		recoverAccess.POST("/", h.GenerateRecoverAccessLink)
+		recoverAccess.PUT("/", h.RegisterNewPassword)
+	}
+
 	api := router.Group("/api", h.apiMiddleware)
 	{
 		posts := api.Group("/posts")
