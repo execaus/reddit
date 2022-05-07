@@ -10,6 +10,12 @@ type AuthPostgres struct {
 	db *sqlx.DB
 }
 
+const (
+	AccountRoleAdmin     = "admin"
+	AccountRoleModerator = "moderator"
+	AccountRoleUser      = "user"
+)
+
 func (r *AuthPostgres) SignIn(input *models.InputSignIn) (*models.OutputSignIn, error) {
 	var output models.OutputSignIn
 	var account models.Account
@@ -34,8 +40,8 @@ func (r *AuthPostgres) SignUp(input *models.InputSignUp) error {
 		return err
 	}
 
-	_, err = r.db.Query(`insert into "Account" (login, password, name, email) 
-		values ($1, $2, $3, $4)`, input.Login, passwordHash, input.Name, input.Email)
+	_, err = r.db.Query(`insert into "Account" (login, password, name, email, role, create_date) 
+		values ($1, $2, $3, $4, $5, current_timestamp)`, input.Login, passwordHash, input.Name, input.Email, AccountRoleUser)
 	if err != nil {
 		return err
 	}
