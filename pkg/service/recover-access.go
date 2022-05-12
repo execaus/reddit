@@ -13,8 +13,8 @@ func NewRecoverAccessService(repo repository.RecoverAccess) *RecoverAccessServic
 	return &RecoverAccessService{repo: repo}
 }
 
-func (r *RecoverAccessService) GenerateLink(input *models.InputRecoverAccessLink) error {
-	link, email, err := r.repo.GenerateLink(input)
+func (s *RecoverAccessService) GenerateLink(input *models.InputRecoverAccessLink) error {
+	link, email, err := s.repo.GenerateLink(input)
 	if err != nil {
 		return err
 	}
@@ -22,4 +22,13 @@ func (r *RecoverAccessService) GenerateLink(input *models.InputRecoverAccessLink
 	sendEmailRecoverAccess(link, email)
 
 	return nil
+}
+
+func (s *RecoverAccessService) RegisterNewPassword(input *models.InputRecoverAccessRegister) (string, error) {
+	email, message, err := s.repo.RegisterNewPassword(input)
+	if err != nil {
+		return message, err
+	}
+	sendEmail("Изменение пароля прошло успешно!", email)
+	return "", nil
 }

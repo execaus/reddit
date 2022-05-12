@@ -35,3 +35,42 @@ func (r *RecoverAccessPostgres) GenerateLink(input *models.InputRecoverAccessLin
 
 	return link, account.Email, nil
 }
+
+func (r *RecoverAccessPostgres) RegisterNewPassword(input *models.InputRecoverAccessRegister) (string, string, error) {
+	var account models.Account
+	tx, err := r.db.Beginx()
+	if err != nil {
+		return "", "", err
+	}
+
+	if err = tx.Get(&account, `select acc.* from (select * from "RecoverAccess" where id=$1 
+        and dead_date>current_timestamp and completed=false) as ra
+    	inner join (select * from "Account") as acc on ra.account=acc.login`, input.Id); err != nil {
+		_ = tx.Rollback()
+		return "", "", err
+	}
+
+	passwordHash, err := getPasswordHash(input.Password)
+	if err != nil {
+		_ = tx.Rollback()
+		return "", "", err
+	}
+
+	_, err = tx.Query(`update "Account" set password=$1 where login=$2`, passwordHash, account.Login)
+	if err != nil {
+		_ = tx.Rollback()
+		return "", "", err
+	}
+
+	_, err = tx.Query(`update "RecoverAccess" set completed=true where id=$1`, input.Id)
+	if err != nil {
+		_ = tx.Rollback()
+		return "", "", err
+	}
+
+	if err = tx.Commit(); err != nil {
+		return "", "", err
+	}
+
+	return account.Email, "", nil
+}

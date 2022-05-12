@@ -25,6 +25,12 @@ func (h *Handler) SignIn(c *gin.Context) {
 		return
 	}
 
+	output.Session, err = h.services.Session.Generate(output.Account.Login)
+	if err != nil {
+		sendInternalServerError(c, err)
+		return
+	}
+
 	c.JSON(http.StatusOK, output)
 }
 

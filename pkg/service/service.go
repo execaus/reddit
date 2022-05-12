@@ -25,6 +25,7 @@ type Session interface {
 
 type RecoverAccess interface {
 	GenerateLink(link *models.InputRecoverAccessLink) error
+	RegisterNewPassword(input *models.InputRecoverAccessRegister) (string, error)
 }
 
 type Service struct {
